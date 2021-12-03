@@ -27,3 +27,7 @@ Route::get('/chat/{email}',function($email){
         "user"=>$user
     ]);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

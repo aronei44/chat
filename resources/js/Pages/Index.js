@@ -34,6 +34,7 @@ export default function Index({user}) {
   let sideHeight = window.innerHeight - navHeight
   return (
     <Layout>
+      <Head title={user===undefined ? 'welcome':user.name} />
       <nav className="navbar navbar-light bg-light" style={{height:navHeight}}>
         <div className="container-fluid">
           <span className="navbar-brand mb-0 h1">{user === undefined ? '': user.name}</span>
