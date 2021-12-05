@@ -24,19 +24,16 @@ class RoomController extends Controller
         $room = Room::where('user1_id',Auth::user()->id)
                     ->where('user2_id',$user->id)
                     ->first();
-        $msg = "Room Ditemukan";
         if(!$room){
-            $room = Room::where('user1_id',Auth::user()->id)
-                        ->where('user2_id',$user->id)
+            $room = Room::where('user1_id',$user->id)
+                        ->where('user2_id',Auth::user()->id)
                         ->first();
-            $msg = "Room Ditemukan";
         }
         if(!$room){
             $room = Room::create([
                 'user1_id'=>Auth::user()->id,
                 'user2_id'=>$user->id
             ]);
-            $msg = "Room Dibuat";
         }
 
         return Inertia::render('Index',[

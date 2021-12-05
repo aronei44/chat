@@ -100,7 +100,7 @@ export default function Index({user, room, auth}) {
   else
   {
     return (
-      <Layout>
+      <Layout auth={auth}>
         <Head title="Welcome" />
         <h1>Selamat Datang Di Aplikasi Chat</h1>
       </Layout>
