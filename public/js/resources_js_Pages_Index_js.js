@@ -42,7 +42,7 @@ var Left = function Left(_ref) {
   time = time.split('T');
   var clock = time[1].split(':');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-    className: "row ms-3 mt-1 me-3",
+    className: "row ms-3 mt-1 me-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-8 card left",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
@@ -64,7 +64,7 @@ var Right = function Right(_ref2) {
   time = time.split('T');
   var clock = time[1].split(':');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-    className: "row me-3 mt-1 ms-3",
+    className: "row me-3 mt-1 ms-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-3 second",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
@@ -114,6 +114,12 @@ function Index(_ref3) {
   });
 
   if (user !== undefined) {
+    setTimeout(function () {
+      var elem = document.querySelectorAll('.scroll');
+      var len = elem.length - 1;
+      elem[len].scrollIntoView();
+    }, 1);
+
     if (messages.length === 0) {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
         return setMessages(data.data.data.messages);
@@ -145,6 +151,7 @@ function Index(_ref3) {
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           className: "list-group",
+          id: "scroll",
           children: messages.map(function (data, index) {
             if (data.from === user.id) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Left, {

@@ -7,7 +7,7 @@ const Left = ({message, time}) =>{
   time = time.split('T')
   const clock = time[1].split(':')
   return (
-    <div className="row ms-3 mt-1 me-3">
+    <div className="row ms-3 mt-1 me-3 scroll">
       <div className="col-md-8 card left">
         <p>{message}</p>
       </div>
@@ -21,7 +21,7 @@ const Right = ({message, time}) =>{
   time = time.split('T')
   const clock = time[1].split(':')
   return (
-    <div className="row me-3 mt-1 ms-3">
+    <div className="row me-3 mt-1 ms-3 scroll">
       <div className="col-md-3 second">
         <p className="small">{time[0]} {clock[0]}:{clock[1]}</p>
       </div>
@@ -54,7 +54,13 @@ export default function Index({user, room, auth}) {
         .then(data => setMessages(data.data.data.messages))
       }
 		});
+    
   if(user!== undefined){
+    setTimeout(()=>{
+      let elem = document.querySelectorAll('.scroll')
+      let len  = elem.length-1
+      elem[len].scrollIntoView()
+    },1)
     if(messages.length === 0){
       axios.get(`/messages/${room.id}`)
         .then(data => setMessages(data.data.data.messages))
@@ -74,7 +80,7 @@ export default function Index({user, room, auth}) {
                 maxHeight:sideHeight,
                 overflow:"auto"
           }}>
-          <div className="list-group">
+          <div className="list-group" id='scroll'>
             {messages.map((data, index)=>{
               if(data.from===user.id){
                 return(
