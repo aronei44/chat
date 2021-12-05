@@ -3,7 +3,7 @@
 use App\Models\User;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
-// use App\Events\MessageNotification;
+use App\Events\MessageNotification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoomController;
 
@@ -25,9 +25,9 @@ Route::middleware('auth')->group(function(){
     Route::get('/messages/{id}',   [RoomController::class,'messages']);
 });
 
-// Route::get('/event', function(){
-//     event(new MessageNotification(['room'=>'tes']));
-// });
+Route::get('/event', function(){
+    event(new MessageNotification(['room'=>'tes']));
+});
 
 
 Auth::routes();

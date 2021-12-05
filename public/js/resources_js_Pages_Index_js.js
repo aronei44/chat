@@ -105,6 +105,14 @@ function Index(_ref3) {
     });
   };
 
+  Echo.channel('Notification').listen('.message', function (e) {
+    if (e.room.id === room.id) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
+        return setMessages(data.data.data.messages);
+      });
+    }
+  });
+
   if (user !== undefined) {
     if (messages.length === 0) {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
