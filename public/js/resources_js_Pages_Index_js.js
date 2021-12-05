@@ -107,7 +107,7 @@ function Index(_ref3) {
 
   if (user !== undefined) {
     if (messages.length === 0) {
-      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(user.id)).then(function (data) {
+      axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
         return setMessages(data.data.data.messages);
       });
     }

@@ -50,7 +50,7 @@ export default function Index({user, room, auth}) {
   
   if(user!== undefined){
     if(messages.length === 0){
-      axios.get(`/messages/${user.id}`)
+      axios.get(`/messages/${room.id}`)
         .then(data => setMessages(data.data.data.messages))
     }
   

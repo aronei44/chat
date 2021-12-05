@@ -7,6 +7,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use App\Events\MessageNotification;
 use Illuminate\Support\Facades\Auth;
 
 class RoomController extends Controller
@@ -59,6 +60,7 @@ class RoomController extends Controller
                 'to'=>$to,
                 'body'=>$request->body
             ]);
+            event(new MessageNotification($room));
             return response()->json([
                 'message'=>'Created',
                 'data'=>Message::where('room_id',$room->id)->get()
