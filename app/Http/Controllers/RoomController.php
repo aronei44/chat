@@ -48,16 +48,23 @@ class RoomController extends Controller
     public function push(){
         return redirect('/');
     }
-    public function send(Request $request,$id){
+    public function send(Request $request,Room $room){
         try {
+            $user = Auth::user()->id;
+            if($room->user1_id == $user){
+                $to = $room->user2_id;
+            }else{
+                $to = $room->user2_id;
+            }
             $msg = Message::create([
-                'room_id'=>$id,
-                'from'=>Auth::user()->id,
+                'room_id'=>$room->id,
+                'from'=>$user,
+                'to'=>$to,
                 'body'=>$request->body
             ]);
             return response()->json([
                 'message'=>'Created',
-                'data'=>Message::where('room_id',$id)->get()
+                'data'=>Message::where('room_id',$room->id)->get()
             ],201);
         } catch (\Throwable $th) {
             return response()->json([

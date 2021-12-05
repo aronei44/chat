@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
-import axios from 'axios'
 
-export default function Layout({ children }) {
-    // console.log(auth)
+export default function Layout({ children, auth }) {
     const {users, csrf} = usePage().props
     let navHeight = "120"
     let sideHeight = window.innerHeight - navHeight
-    // console.log(height)
   return (
     <main>
       <div className="row">
@@ -33,7 +30,7 @@ export default function Layout({ children }) {
             }}>
             <div className="list-group">
               {users.map((data,index)=>{
-                if(data.id){
+                if(data.id !== auth.id){
                   return(
                     <Link href={"/chat/"+data.email} className="list-group-item list-group-item-action" key={index}>
                       <div className="d-flex w-100 justify-content-between">
