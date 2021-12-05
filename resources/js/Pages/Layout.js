@@ -4,7 +4,8 @@ import { Inertia } from '@inertiajs/inertia'
 import axios from 'axios'
 
 export default function Layout({ children }) {
-    const {users} = usePage().props
+    // console.log(auth)
+    const {users, csrf} = usePage().props
     let navHeight = "120"
     let sideHeight = window.innerHeight - navHeight
     // console.log(height)
@@ -14,7 +15,11 @@ export default function Layout({ children }) {
         <div className="col-3  bg-light">
           <nav className="navbar navbar-light bg-light" style={{height:navHeight}}>
             <div className="container-fluid">
-              <span className="navbar-brand mb-0 h1">Chat 2</span>
+              <Link href="/" className="navbar-brand mb-0 h1">Chat</Link>
+              <button className="btn btn-danger" onClick={()=>{
+                Inertia.post('/logout',{csrf})
+                window.location.href = "/login"
+                }}>Logout</button>
             </div>
           </nav>
           <div className="d-flex mx-2 mt-2 mb-2">
@@ -28,15 +33,17 @@ export default function Layout({ children }) {
             }}>
             <div className="list-group">
               {users.map((data,index)=>{
-                return(
-                  <Link href={"/chat/"+data.email} className="list-group-item list-group-item-action" key={index}>
-                    <div className="d-flex w-100 justify-content-between">
-                      <h5 className="mb-1">{data.name}</h5>
-                      <small className="text-muted">3 days ago</small>
-                    </div>
-                    <small className="text-muted">And some muted small print.</small>
-                  </Link>
-                )
+                if(data.id){
+                  return(
+                    <Link href={"/chat/"+data.email} className="list-group-item list-group-item-action" key={index}>
+                      <div className="d-flex w-100 justify-content-between">
+                        <h5 className="mb-1">{data.name}</h5>
+                        <small className="text-muted">3 days ago</small>
+                      </div>
+                      <small className="text-muted">And some muted small print.</small>
+                    </Link>
+                  )
+                }
               })}
                 
             </div>

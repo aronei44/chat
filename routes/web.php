@@ -2,7 +2,9 @@
 
 use App\Models\User;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\RoomController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,20 +16,15 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return Inertia::render('Index');
+Route::middleware('auth')->group(function(){
+    Route::get('/',             [RoomController::class,'index']);
+    Route::get('/chat',         [RoomController::class,'push']);
+    Route::get('/chat/{email}',        [RoomController::class,'room']);
+    Route::post('/send/{id}',   [RoomController::class,'send']);
+    Route::get('/messages/{id}',   [RoomController::class,'messages']);
 });
 
-Route::get('/chat/{email}',function($email){
-    // dd($email);
-    // return $email;
-    $user = User::where('email',$email)->first();
-    return Inertia::render('Index',[
-        "user"=>$user
-    ]);
-});
+
+
 
 Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
