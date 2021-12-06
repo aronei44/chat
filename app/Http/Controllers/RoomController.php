@@ -61,9 +61,21 @@ class RoomController extends Controller
                 'body'=>$request->body
             ]);
             event(new MessageNotification($room));
+            $messages = [];
+            foreach(Message::where('room_id', $id)->get() as $message){
+                $time = explode(' ',$message->created_at);
+                $messages[]=[
+                    'room_id'=>$message->room_id,
+                    'from'=>$message->from,
+                    'to'=>$message->to,
+                    'body'=>$message->body,
+                    'date'=>$time[0],
+                    'clock'=>$time[1]
+                ];
+            }
             return response()->json([
                 'message'=>'Created',
-                'data'=>Message::where('room_id',$room->id)->get()
+                'data'=>$messages
             ],201);
         } catch (\Throwable $th) {
             return response()->json([
@@ -89,6 +101,30 @@ class RoomController extends Controller
         return response()->json([
             'message'=>'Room Ditemukan',
             'data'=>$room
+        ],200);
+    }
+    public function getUser(){
+        $users = [];
+        $rooms = [];
+        foreach(Message::orderBy('id','desc')->get() as $message){
+            if($message->from == Auth::user()->id || $message->to == Auth::user()->id){
+                if (!in_array($message->room_id, $rooms)){
+                    $rooms[]=$message->room_id;
+                }
+            }
+        }
+        foreach($rooms as $id){
+            $room = Room::find($id);
+            if($room->user1_id == Auth::user()->id){
+                $users[]=User::find($room->user2_id);
+            }else{
+                $users[]=User::find($room->user1_id);
+            }
+        }
+        // dd($users);
+        return response()->json([
+            'message'=>'bind users generated',
+            'data'=>$users
         ],200);
     }
 }

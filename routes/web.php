@@ -20,9 +20,10 @@ use App\Http\Controllers\RoomController;
 Route::middleware('auth')->group(function(){
     Route::get('/',             [RoomController::class,'index']);
     Route::get('/chat',         [RoomController::class,'push']);
-    Route::get('/chat/{email}',        [RoomController::class,'room']);
-    Route::post('/send/{room}',   [RoomController::class,'send']);
-    Route::get('/messages/{id}',   [RoomController::class,'messages']);
+    Route::get('/chat/{email}', [RoomController::class,'room']);
+    Route::post('/send/{room}', [RoomController::class,'send']);
+    Route::get('/messages/{id}',[RoomController::class,'messages']);
+    Route::get('/user',         [RoomController::class,'getUser']);
 });
 
 Route::get('/event', function(){

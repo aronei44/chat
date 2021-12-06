@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Layout from './Layout'
 import { Head } from '@inertiajs/inertia-react'
 import axios from 'axios'
@@ -54,11 +54,13 @@ export default function Index({user, room, auth}) {
 		});
     
   if(user!== undefined){
-    
-    if(messages.length === 0){
+    useEffect(() => {
       axios.get(`/messages/${room.id}`)
         .then(data => setMessages(data.data.data.messages))
-    }
+      return () => {
+        setMessages([])
+      }
+    }, [])
     setTimeout(()=>{
       let elem = document.querySelectorAll('.scroll')
       let len  = elem.length-1

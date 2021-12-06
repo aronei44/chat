@@ -1,11 +1,26 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, usePage } from '@inertiajs/inertia-react'
 import { Inertia } from '@inertiajs/inertia'
 
 export default function Layout({ children, auth }) {
-    const {users, csrf} = usePage().props
+    const {csrf} = usePage().props
+    const [users, setUsers] = useState([])
     let navHeight = "120"
     let sideHeight = window.innerHeight - navHeight
+    useEffect(() => {
+      axios.get('/user')
+        .then(data => setUsers(data.data.data))
+      return () => {
+        setUsers([])
+      }
+    }, [])
+    Echo.channel('Notification')
+      .listen('.message', (e) => {
+        if(e.room.user1_id === auth.id || e.room.user2_id){
+          axios.get('/user')
+          .then(data => setUsers(data.data.data))
+        }
+      });
   return (
     <main>
       <div className="row">
