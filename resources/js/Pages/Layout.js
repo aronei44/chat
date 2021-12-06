@@ -21,6 +21,7 @@ export default function Layout({ children, auth }) {
           .then(data => setUsers(data.data.data))
         }
       });
+    
   return (
     <main>
       <div className="row">
@@ -45,17 +46,17 @@ export default function Layout({ children, auth }) {
             }}>
             <div className="list-group">
               {users.map((data,index)=>{
-                if(data.id !== auth.id){
-                  return(
-                    <Link href={"/chat/"+data.email} className="list-group-item list-group-item-action" key={index}>
-                      <div className="d-flex w-100 justify-content-between">
-                        <h5 className="mb-1">{data.name}</h5>
-                        <small className="text-muted">3 days ago</small>
-                      </div>
-                      <small className="text-muted">And some muted small print.</small>
-                    </Link>
-                  )
-                }
+                return(
+                  <Link href={"/chat/"+data.user.email} className="list-group-item list-group-item-action" key={index}>
+                    <div className="d-flex w-100 justify-content-between">
+                      <h5 className="mb-1">{data.user.name}</h5>
+                    </div>
+                    <div className="d-flex w-100 justify-content-between">
+                      <small className="text-muted">{data.message.body}</small>
+                      <small className="text-muted">{data.message.clock}</small>
+                    </div>
+                  </Link>
+                )
               })}
                 
             </div>

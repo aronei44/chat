@@ -102,11 +102,15 @@ export default function Index({user, room, auth}) {
             type="text" 
             placeholder="Tulis Pesan Anda" 
             aria-label="Search" 
+            value={message}
             onChange={(e)=>setMessage(e.target.value)}/>
           <button 
             className="btn btn-outline-success" 
             type="button" 
-            onClick={()=>send()} 
+            onClick={()=>{
+              send()
+              setMessage('')
+            }} 
             >Kirim</button>
         </div>
       </Layout>

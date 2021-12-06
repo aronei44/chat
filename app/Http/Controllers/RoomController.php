@@ -115,13 +115,28 @@ class RoomController extends Controller
         }
         foreach($rooms as $id){
             $room = Room::find($id);
+            $message = Message::orderBy('id','desc')->where('room_id',$room->id)->first();
+            $time = explode(' ',$message->created_at);
+            $messages=[
+                'room_id'=>$message->room_id,
+                'from'=>$message->from,
+                'to'=>$message->to,
+                'body'=>$message->body,
+                'date'=>$time[0],
+                'clock'=>$time[1]
+            ];
             if($room->user1_id == Auth::user()->id){
-                $users[]=User::find($room->user2_id);
+                $users[]=[
+                    'user'=>User::find($room->user2_id),
+                    'message'=>$messages
+                ];
             }else{
-                $users[]=User::find($room->user1_id);
+                $users[]=[
+                    'user'=>User::find($room->user1_id),
+                    'message'=>$messages
+                ];
             }
         }
-        // dd($users);
         return response()->json([
             'message'=>'bind users generated',
             'data'=>$users

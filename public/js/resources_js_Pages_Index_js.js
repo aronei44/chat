@@ -179,6 +179,7 @@ function Index(_ref3) {
           type: "text",
           placeholder: "Tulis Pesan Anda",
           "aria-label": "Search",
+          value: message,
           onChange: function onChange(e) {
             return setMessage(e.target.value);
           }
@@ -186,7 +187,8 @@ function Index(_ref3) {
           className: "btn btn-outline-success",
           type: "button",
           onClick: function onClick() {
-            return send();
+            send();
+            setMessage('');
           },
           children: "Kirim"
         })]
@@ -313,25 +315,26 @@ function Layout(_ref) {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "list-group",
             children: users.map(function (data, index) {
-              if (data.id !== auth.id) {
-                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
-                  href: "/chat/" + data.email,
-                  className: "list-group-item list-group-item-action",
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-                    className: "d-flex w-100 justify-content-between",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h5", {
-                      className: "mb-1",
-                      children: data.name
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("small", {
-                      className: "text-muted",
-                      children: "3 days ago"
-                    })]
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_1__.Link, {
+                href: "/chat/" + data.user.email,
+                className: "list-group-item list-group-item-action",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                  className: "d-flex w-100 justify-content-between",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h5", {
+                    className: "mb-1",
+                    children: data.user.name
+                  })
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                  className: "d-flex w-100 justify-content-between",
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("small", {
+                    className: "text-muted",
+                    children: data.message.body
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("small", {
                     className: "text-muted",
-                    children: "And some muted small print."
+                    children: data.message.clock
                   })]
-                }, index);
-              }
+                })]
+              }, index);
             })
           })
         })]
