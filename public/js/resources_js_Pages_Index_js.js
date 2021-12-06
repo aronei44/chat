@@ -38,9 +38,9 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Left = function Left(_ref) {
   var message = _ref.message,
-      time = _ref.time;
-  time = time.split('T');
-  var clock = time[1].split(':');
+      date = _ref.date,
+      clock = _ref.clock;
+  clock = clock.split(':');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "row ms-3 mt-1 me-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -52,7 +52,7 @@ var Left = function Left(_ref) {
       className: "col-md-3",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
         className: "small",
-        children: [time[0], " ", clock[0], ":", clock[1]]
+        children: [date, " ", clock[0], ":", clock[1]]
       })
     })]
   });
@@ -60,16 +60,16 @@ var Left = function Left(_ref) {
 
 var Right = function Right(_ref2) {
   var message = _ref2.message,
-      time = _ref2.time;
-  time = time.split('T');
-  var clock = time[1].split(':');
+      date = _ref2.date,
+      clock = _ref2.clock;
+  clock = clock.split(':');
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "row me-3 mt-1 ms-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-3 second",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
         className: "small",
-        children: [time[0], " ", clock[0], ":", clock[1]]
+        children: [date, " ", clock[0], ":", clock[1]]
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-8 card right first",
@@ -114,18 +114,20 @@ function Index(_ref3) {
   });
 
   if (user !== undefined) {
-    setTimeout(function () {
-      var elem = document.querySelectorAll('.scroll');
-      var len = elem.length - 1;
-      elem[len].scrollIntoView();
-    }, 1);
-
     if (messages.length === 0) {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
         return setMessages(data.data.data.messages);
       });
     }
 
+    setTimeout(function () {
+      var elem = document.querySelectorAll('.scroll');
+      var len = elem.length - 1;
+
+      if (len > 0) {
+        elem[len].scrollIntoView();
+      }
+    }, 1);
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], {
       auth: auth,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
@@ -156,12 +158,14 @@ function Index(_ref3) {
             if (data.from === user.id) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Left, {
                 message: data.body,
-                time: data.created_at
+                date: data.date,
+                clock: data.clock
               }, index);
             } else {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Right, {
                 message: data.body,
-                time: data.created_at
+                date: data.date,
+                clock: data.clock
               }, index);
             }
           })

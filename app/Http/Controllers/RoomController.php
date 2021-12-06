@@ -72,9 +72,23 @@ class RoomController extends Controller
         }
     }
     public function messages($id){
+        $room = Room::find($id);
+        $messages = [];
+        foreach(Message::where('room_id', $id)->get() as $message){
+            $time = explode(' ',$message->created_at);
+            $messages[]=[
+                'room_id'=>$message->room_id,
+                'from'=>$message->from,
+                'to'=>$message->to,
+                'body'=>$message->body,
+                'date'=>$time[0],
+                'clock'=>$time[1]
+            ];
+        }
+        $room['messages']=$messages;
         return response()->json([
             'message'=>'Room Ditemukan',
-            'data'=>Room::with('messages')->find($id)
+            'data'=>$room
         ],200);
     }
 }
