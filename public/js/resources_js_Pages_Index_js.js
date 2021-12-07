@@ -97,6 +97,24 @@ function Index(_ref3) {
       messages = _useState4[0],
       setMessages = _useState4[1];
 
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      search = _useState6[0],
+      setSearch = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState8 = _slicedToArray(_useState7, 2),
+      users = _useState8[0],
+      setUsers = _useState8[1];
+
+  var searchUser = function searchUser() {
+    axios__WEBPACK_IMPORTED_MODULE_3___default().post('/search', {
+      name: search
+    }).then(function (data) {
+      return setUsers(data.data.data);
+    });
+  };
+
   var send = function send() {
     axios__WEBPACK_IMPORTED_MODULE_3___default().post("/send/".concat(room.id), {
       body: message
@@ -199,8 +217,54 @@ function Index(_ref3) {
       auth: auth,
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Head, {
         title: "Welcome"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
-        children: "Selamat Datang Di Aplikasi Chat"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "container",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
+          className: "text-center mt-5 mb-5",
+          children: "Selamat Datang Di Aplikasi Chat"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "bg-light container",
+          style: {
+            padding: '20px',
+            borderRadius: "20px"
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+            className: "d-flex mx-2",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+              className: "form-control me-2",
+              type: "search",
+              placeholder: "Mulai Cari Teman Chat Anda (username only)",
+              "aria-label": "Search",
+              value: search,
+              onChange: function onChange(e) {
+                return setSearch(e.target.value);
+              }
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+              className: "btn btn-success",
+              type: "button",
+              onClick: function onClick() {
+                return searchUser();
+              },
+              children: "Cari"
+            })]
+          }), users.length > 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "list-group mt-3 mb-3",
+            style: {
+              height: sideHeight - 200,
+              overflow: 'auto'
+            },
+            children: users.map(function (user, index) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_inertiajs_inertia_react__WEBPACK_IMPORTED_MODULE_2__.Link, {
+                href: "/chat/" + user.email,
+                className: "list-group-item list-group-item-action mx-auto",
+                style: {
+                  width: "80%"
+                },
+                children: [user.name, " - ", user.email]
+              });
+            })
+          }) : '']
+        })]
       })]
     });
   }

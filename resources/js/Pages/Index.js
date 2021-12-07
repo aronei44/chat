@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import Layout from './Layout'
-import { Head } from '@inertiajs/inertia-react'
+import { Head, Link } from '@inertiajs/inertia-react'
 import axios from 'axios'
 
 const Left = ({message, date, clock}) =>{
@@ -39,7 +39,15 @@ export default function Index({user, room, auth}) {
 
   const [messages, setMessages] = useState([])
 
-  
+  const [search, setSearch] = useState('')
+
+  const [users, setUsers] = useState([])
+
+  const searchUser = () =>{
+    axios.post('/search', {name:search})
+    .then(data=>setUsers(data.data.data))
+  }
+
   const send = () =>{
     axios.post(`/send/${room.id}`,{body:message})
       .then(data => setMessages(data.data.data))
@@ -52,7 +60,7 @@ export default function Index({user, room, auth}) {
         .then(data => setMessages(data.data.data.messages))
       }
 		});
-    
+  
   if(user!== undefined){
     useEffect(() => {
       axios.get(`/messages/${room.id}`)
@@ -121,7 +129,38 @@ export default function Index({user, room, auth}) {
     return (
       <Layout auth={auth}>
         <Head title="Welcome" />
-        <h1>Selamat Datang Di Aplikasi Chat</h1>
+        <div className="container">
+          <h1 className="text-center mt-5 mb-5">Selamat Datang Di Aplikasi Chat</h1>
+          <div className="bg-light container" style={{padding:'20px',borderRadius:"20px"}}>
+            <div className="d-flex mx-2">
+              <input 
+                className="form-control me-2" 
+                type="search" 
+                placeholder="Mulai Cari Teman Chat Anda (username only)" 
+                aria-label="Search"
+                value={search}
+                onChange={(e)=>setSearch(e.target.value)}
+                />
+              <button 
+                className="btn btn-success" 
+                type="button"
+                onClick={()=>searchUser()} 
+                >Cari</button>
+            </div>
+            {users.length>0 ?
+              
+              <div className="list-group mt-3 mb-3" style={{height:sideHeight-200,overflow:'auto'}}>
+                {users.map((user,index)=>{
+                  return(
+                    <Link href={"/chat/"+user.email} className="list-group-item list-group-item-action mx-auto" style={{width:"80%"}}>{user.name} - {user.email}</Link>
+                  )
+                })}
+              </div>
+          :''}
+            
+          </div>
+          
+        </div>
       </Layout>
     )
   }

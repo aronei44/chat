@@ -142,4 +142,10 @@ class RoomController extends Controller
             'data'=>$users
         ],200);
     }
+    public function searchUser(Request $request){
+        return response()->json([
+            "message"=>"success",
+            "data"=>User::where('name','like',"%$request->name%")->get()
+        ]);
+    }
 }

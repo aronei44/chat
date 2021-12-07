@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function(){
     Route::post('/send/{room}', [RoomController::class,'send']);
     Route::get('/messages/{id}',[RoomController::class,'messages']);
     Route::get('/user',         [RoomController::class,'getUser']);
+    Route::post('/search',      [RoomController::class,'searchUser']);
 });
 
 Route::get('/event', function(){
