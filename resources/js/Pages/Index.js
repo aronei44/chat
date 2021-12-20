@@ -3,25 +3,25 @@ import Layout from './Layout'
 import { Head, Link } from '@inertiajs/inertia-react'
 import axios from 'axios'
 
-const Left = ({message, date, clock}) =>{
-  clock = clock.split(':')
+const Left = ({message, time}) =>{
+
   return (
     <div className="row ms-3 mt-1 me-3 scroll">
       <div className="col-md-8 card left">
         <p>{message}</p>
       </div>
       <div className="col-md-3">
-        <p className="small">{date} {clock[0]}:{clock[1]}</p>
+        <p className="small">{time}</p>
       </div>
     </div>
   )
 }
-const Right = ({message, date, clock}) =>{
-  clock = clock.split(':')
+const Right = ({message, time}) =>{
+
   return (
     <div className="row me-3 mt-1 ms-3 scroll">
       <div className="col-md-3 second">
-        <p className="small">{date} {clock[0]}:{clock[1]}</p>
+        <p className="small">{time}</p>
       </div>
       <div className="col-md-8 card right first">
         <p>{message}</p>
@@ -57,14 +57,14 @@ export default function Index({user, room, auth}) {
 		.listen('.message', (e) => {
 			if(e.room.id === room.id){
         axios.get(`/messages/${room.id}`)
-        .then(data => setMessages(data.data.data.messages))
+        .then(data => setMessages(data.data.data))
       }
 		});
-  
+
   if(user!== undefined){
     useEffect(() => {
       axios.get(`/messages/${room.id}`)
-        .then(data => setMessages(data.data.data.messages))
+        .then(data => setMessages(data.data.data))
       return () => {
         setMessages([])
       }
@@ -76,7 +76,7 @@ export default function Index({user, room, auth}) {
         elem[len].scrollIntoView()
       }
     },1)
-  
+
     return (
       <Layout auth={auth}>
         <Head title={user.name} />
@@ -94,31 +94,31 @@ export default function Index({user, room, auth}) {
             {messages.map((data, index)=>{
               if(data.from===user.id){
                 return(
-                  <Left message={data.body} date={data.date} clock={data.clock} key={index} />
+                  <Left message={data.body} time={data.time} key={index} />
                 )
               }else{
                 return(
-                  <Right message={data.body} date={data.date} clock={data.clock} key={index} />
+                  <Right message={data.body} time={data.time} key={index} />
                 )
               }
             })}
           </div>
         </div>
         <div className="d-flex mx-2 mt-2 mb-2">
-          <input 
-            className="form-control me-2" 
-            type="text" 
-            placeholder="Tulis Pesan Anda" 
-            aria-label="Search" 
+          <input
+            className="form-control me-2"
+            type="text"
+            placeholder="Tulis Pesan Anda"
+            aria-label="Search"
             value={message}
             onChange={(e)=>setMessage(e.target.value)}/>
-          <button 
-            className="btn btn-outline-success" 
-            type="button" 
+          <button
+            className="btn btn-outline-success"
+            type="button"
             onClick={()=>{
               send()
               setMessage('')
-            }} 
+            }}
             >Kirim</button>
         </div>
       </Layout>
@@ -133,22 +133,22 @@ export default function Index({user, room, auth}) {
           <h1 className="text-center mt-5 mb-5">Selamat Datang Di Aplikasi Chat</h1>
           <div className="bg-light container" style={{padding:'20px',borderRadius:"20px"}}>
             <div className="d-flex mx-2">
-              <input 
-                className="form-control me-2" 
-                type="search" 
-                placeholder="Mulai Cari Teman Chat Anda (username only)" 
+              <input
+                className="form-control me-2"
+                type="search"
+                placeholder="Mulai Cari Teman Chat Anda (username only)"
                 aria-label="Search"
                 value={search}
                 onChange={(e)=>setSearch(e.target.value)}
                 />
-              <button 
-                className="btn btn-success" 
+              <button
+                className="btn btn-success"
                 type="button"
-                onClick={()=>searchUser()} 
+                onClick={()=>searchUser()}
                 >Cari</button>
             </div>
             {users.length>0 ?
-              
+
               <div className="list-group mt-3 mb-3" style={{height:sideHeight-200,overflow:'auto'}}>
                 {users.map((user,index)=>{
                   return(
@@ -157,9 +157,9 @@ export default function Index({user, room, auth}) {
                 })}
               </div>
           :''}
-            
+
           </div>
-          
+
         </div>
       </Layout>
     )

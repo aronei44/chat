@@ -38,9 +38,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var Left = function Left(_ref) {
   var message = _ref.message,
-      date = _ref.date,
-      clock = _ref.clock;
-  clock = clock.split(':');
+      time = _ref.time;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "row ms-3 mt-1 me-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
@@ -50,9 +48,9 @@ var Left = function Left(_ref) {
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-3",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "small",
-        children: [date, " ", clock[0], ":", clock[1]]
+        children: time
       })
     })]
   });
@@ -60,16 +58,14 @@ var Left = function Left(_ref) {
 
 var Right = function Right(_ref2) {
   var message = _ref2.message,
-      date = _ref2.date,
-      clock = _ref2.clock;
-  clock = clock.split(':');
+      time = _ref2.time;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "row me-3 mt-1 ms-3 scroll",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-3 second",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "small",
-        children: [date, " ", clock[0], ":", clock[1]]
+        children: time
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "col-md-8 card right first",
@@ -126,7 +122,7 @@ function Index(_ref3) {
   Echo.channel('Notification').listen('.message', function (e) {
     if (e.room.id === room.id) {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
-        return setMessages(data.data.data.messages);
+        return setMessages(data.data.data);
       });
     }
   });
@@ -134,7 +130,7 @@ function Index(_ref3) {
   if (user !== undefined) {
     (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
       axios__WEBPACK_IMPORTED_MODULE_3___default().get("/messages/".concat(room.id)).then(function (data) {
-        return setMessages(data.data.data.messages);
+        return setMessages(data.data.data);
       });
       return function () {
         setMessages([]);
@@ -178,14 +174,12 @@ function Index(_ref3) {
             if (data.from === user.id) {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Left, {
                 message: data.body,
-                date: data.date,
-                clock: data.clock
+                time: data.time
               }, index);
             } else {
               return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(Right, {
                 message: data.body,
-                date: data.date,
-                clock: data.clock
+                time: data.time
               }, index);
             }
           })
