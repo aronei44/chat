@@ -56,9 +56,12 @@ export default function Index({user, room, auth}) {
   Echo.channel('Notification')
 		.listen('.message', (e) => {
 			if(e.room.id === room.id){
-        axios.get(`/messages/${room.id}`)
-        .then(data => setMessages(data.data.data))
-      }
+                axios.get(`/messages/${room.id}`)
+                .then(data => {
+                    setMessages(data.data.data)
+                    console.log(e)
+                })
+            }
 		});
 
   if(user!== undefined){
